@@ -9,6 +9,8 @@ const prix = document.querySelectorAll(".amount");
 const AllDepense = document.querySelector(".AllDepense");
 const prixNom = document.querySelectorAll(".prix-nom");
 const mesImages = document.querySelectorAll(".card-img-top");
+const allCakes = document.querySelectorAll(".cakes")
+const deleteButton = document.querySelectorAll(".delete-button");
 
 for (let i = 0; i < categoryTitle.length; i++) {
   categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -70,7 +72,7 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
 
 cartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
-        const item = icon.parentElement.parentElement;
+        const item = icon.parentElement;
                 const title = item.querySelector('.category-name').textContent;
                 const price = item.querySelector('.amount').textContent;
                 const image = item.querySelector('.card-img-top').src;
@@ -78,7 +80,7 @@ cartIcon.forEach(icon => {
                 const cartItem = document.createElement('div');
                 cartItem.classList.add('cart-item');
                 cartItem.innerHTML = `
-                <div class="d-flex justify-content-evenly">
+                <div class="d-flex mt-3 justify-content-evenly">
                     <div class="imgCart">
                     <img src="${image}" alt="${title}">
                     </div>
@@ -100,76 +102,8 @@ cartIcon.forEach(icon => {
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function AjoutInCart() {
-//     for (let i = 0; i < prixNom.length; i++) {
-//         let name = categoryName.value
-//         let valeur = prix.value
-//         console.log(name);
-
-//         const div = document.createElement("div")
-//         div.innerHTML = `<div class="d-flex justify-content-evenly">
-//         <div class="imgCart">
-           
-//         </div>
-//         <div class="d-flex flex-column ms-5">
-//             <span class="cartTitle fs-4">${name}</span>
-//             <span class="cartAmount">${valeur}</span>
-//         </div>
-//         <div class="mt-2">
-//             <button class="delete-button text-danger fs-3 border-0 ">
-//                 <i class="bi bi-trash-fill"></i>
-//             </button>
-//         </div>
-//     </div>`
-        
-//     AllDepense.appendChild(div)
-//     }
-
-
-
-// }
-
-
-
-// for (let i = 0; i < cartIcon.length; i++) {
-//     cartIcon[i].addEventListener('click', (event) => {
-//         event.preventDefault();
-//         AjoutInCart();
-//     })
-    
-// }
+deleteButton.forEach(deleteIcon => {
+    deleteIcon.addEventListener('click', () => {
+        console.log('hello');
+    })
+})
