@@ -1,0 +1,178 @@
+
+
+header {
+    background-image: url("../Sweet/brina-blum-P9WkD82hLUI-unsplash.jpg") !important;
+    background-size: cover;
+    background-position: center;
+    height: 100vh !important;
+    background-attachment: fixed;
+}
+
+.nav-image{
+    width: 70px;
+    height: 70px;
+}
+
+.header-titre {
+    color: white;
+    font-size: 40px;
+    margin-top: 10px;
+}
+
+.header-titre2 {
+    color: rgb(255, 0, 85);
+    font-size: 60px;
+}
+
+.header-btn {
+    width: 150px;
+    height: 50px;
+    font-size: 25px;
+    border: 3px solid black;
+    background: none;
+    color: white;
+}
+
+.about-btn {
+    width: 150px;
+    height: 50px;
+    font-size: 25px;
+    border: 3px solid white;
+    background: none;
+    color: black;
+    border: 1px solid black;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.header-btn:hover{
+    background-color: black;
+    color: rgb(255, 0, 85);
+}
+
+.us {
+    color: rgb(255, 0, 85);
+    font-size: 70px;
+}
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+}
+
+.main-container h2 {
+    color: rgb(255, 0, 85);
+    font-size: 55px;
+    margin-left: 6px;
+}
+
+.main-container h3 {
+    margin-top: 10px;
+    font-size: 40px;
+}
+
+.category-head {
+    margin: 30px 0;
+}
+
+.category-head ul {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.category-title {
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.category-title:hover {
+    background-color: black;
+    color: rgb(255, 0, 85);
+}
+
+.card img {
+    height: 350px;
+    cursor: pointer;
+}
+
+
+.star-icon {
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+
+.cart-icon {
+    z-index: 100;
+    margin-top: -40px;
+    font-size: 20px;
+    padding: 5px;
+    display: flex;
+    justify-content: end;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.cart-icon i {
+    color: white;
+    background-color: rgb(106, 233, 89);
+    border-radius: 20%;
+}
+
+.star {
+    color: red;
+    cursor: pointer;
+    transition: all 0.5s;
+    padding: 3px;
+    font-size: 20px;
+}
+
+.star.filled {
+    color: rgb(106, 233, 89);
+}
+
+.input-card {
+    justify-content: center;
+}
+
+.search-icon i {
+    background-color:  rgb(255, 0, 85);
+    color: black;
+    font-size: 20px;
+    padding: 7px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-icon {
+    margin-top: 3px;
+}
+
+.input-search {
+    width: 500px;
+    padding: 4px;
+}
+
+.input-search:focus {
+    outline: none;
+}
+
+.active {
+    background-color: black;
+    color:  rgb(255, 0, 85);
+}
+
