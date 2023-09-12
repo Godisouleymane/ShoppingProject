@@ -71,9 +71,9 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
 cartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
         const item = icon.parentElement.parentElement;
-                const title = item.querySelectorAll('.category-name').textContent;
-                const price = item.querySelectorAll('.amount').textContent;
-                const image = item.querySelectorAll('.card-img-top').src;
+                const title = item.querySelector('.category-name').textContent;
+                const price = item.querySelector('.amount').textContent;
+                const image = item.querySelector('.card-img-top').src;
 
                 const cartItem = document.createElement('div');
                 cartItem.classList.add('cart-item');
