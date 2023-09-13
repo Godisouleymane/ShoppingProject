@@ -11,6 +11,8 @@ const prixNom = document.querySelectorAll(".prix-nom");
 const mesImages = document.querySelectorAll(".card-img-top");
 const allCakes = document.querySelectorAll(".cakes")
 const deleteButton = document.querySelectorAll(".delete-button");
+const searchIcon = document.getElementById('search-icon');
+const monInput = document.getElementById("input-search");
 
 for (let i = 0; i < categoryTitle.length; i++) {
   categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -80,7 +82,7 @@ cartIcon.forEach(icon => {
                 const cartItem = document.createElement('div');
                 cartItem.classList.add('cart-item');
                 cartItem.innerHTML = `
-                <div class="d-flex mt-3 justify-content-evenly">
+                <div class="d-flex mt-4 justify-content-evenly">
                     <div class="imgCart">
                     <img src="${image}" alt="${title}">
                     </div>
@@ -89,7 +91,7 @@ cartIcon.forEach(icon => {
                         <span class="cartAmount">${price}</span>
                     </div>
                        <div class="mt-2">
-                        <button class="delete-button text-danger fs-3 border-0 ">
+                        <button class="delete-button bg-white text-danger fs-3 border-0 ">
                                <i class="bi bi-trash-fill"></i>
                            </button>
                     </div>
@@ -98,12 +100,28 @@ cartIcon.forEach(icon => {
 
         AllDepense.appendChild(cartItem)
 
+        
     })
+    
 })
 
 
-deleteButton.forEach(deleteIcon => {
-    deleteIcon.addEventListener('click', () => {
-        console.log('hello');
-    })
+function recherche() {
+    const inputValue = monInput.value.toLowerCase();
+
+    for (let i = 0; i < AllCategoryPosts.length; i++) {
+        const element = AllCategoryPosts[i].textContent.toLowerCase();
+
+        if (element.includes(inputValue)) {
+            AllCategoryPosts[i].style.display = 'block'
+        } else {
+            AllCategoryPosts[i].style.display = 'none'
+        }
+    }
+}
+
+
+searchIcon.addEventListener('click', (event) => {
+    event.preventDefault();
+    recherche()
 })
