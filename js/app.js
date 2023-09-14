@@ -14,6 +14,7 @@ const allCakes = document.querySelectorAll(".cakes")
 const deleteButton = document.querySelectorAll(".delete-button");
 const searchIcon = document.getElementById('search-icon');
 const monInput = document.getElementById("input-search");
+const itemCount = document.querySelector('.itemCount');
 
 for (let i = 0; i < categoryTitle.length; i++) {
   categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -102,30 +103,22 @@ cartIcon.forEach(icon => {
         button.addEventListener('click', () =>{
             const buttonParent = button.parentElement.parentElement;
             buttonParent.remove();
+            mettreAJourValeur();
         })
-        AllDepense.appendChild(cartItem)
+        AllDepense.appendChild(cartItem);
+        mettreAJourValeur();
+
     })
-
-
-    // const deleteButton = document.querySelectorAll('.delete-button')
-    // console.log(deleteButton);
-
-    // deleteButton.forEach(button => {
-    //     button.addEventListener('click', () =>{
-    //         console.log('hello');
-    //         const buttonParent = button.parentElement.parentElement;
-    //         buttonParent.remove();
-    //     })
-    // })
 })
 
 
-// function load() {
-//     if (localStorage.getItem('cartItemList')) {
-//        AllDepense = JSON.parse(localStorage.getItem('cartItemList'))
-//     }
-// }
-// load()
+function mettreAJourValeur() {
+    const divsDeNiveauSuperieur = Array.from(AllDepense.children).filter(element => element.tagName === 'DIV');
+    const nombreElements = divsDeNiveauSuperieur.length;
+    itemCount.textContent = nombreElements;
+}
+
+
 
 
 function recherche() {
@@ -147,6 +140,5 @@ searchIcon.addEventListener('click', (event) => {
     event.preventDefault();
     recherche()
 })
-
 
 
