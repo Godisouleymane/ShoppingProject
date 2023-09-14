@@ -7,6 +7,7 @@ const cartTitle = document.querySelector(".cartTitle");
 const categoryName = document.querySelectorAll(".category-name");
 const prix = document.querySelectorAll(".amount");
 const AllDepense = document.querySelector(".AllDepense");
+const myArray = [];
 const prixNom = document.querySelectorAll(".prix-nom");
 const mesImages = document.querySelectorAll(".card-img-top");
 const allCakes = document.querySelectorAll(".cakes")
@@ -72,13 +73,13 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
 
 
 
+
 cartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
         const item = icon.parentElement;
                 const title = item.querySelector('.category-name').textContent;
                 const price = item.querySelector('.amount').textContent;
                 const image = item.querySelector('.card-img-top').src;
-
                 const cartItem = document.createElement('div');
                 cartItem.classList.add('cart-item');
                 cartItem.innerHTML = `
@@ -91,19 +92,40 @@ cartIcon.forEach(icon => {
                         <span class="cartAmount">${price}</span>
                     </div>
                        <div class="mt-2">
-                        <button class="delete-button bg-white text-danger fs-3 border-0 ">
+                        <button class="delete-button bg-white text-danger fs-3 border-0">
                                <i class="bi bi-trash-fill"></i>
                            </button>
                     </div>
                 </div>
                 `;
-
+        const button = cartItem.querySelector('.delete-button')
+        button.addEventListener('click', () =>{
+            const buttonParent = button.parentElement.parentElement;
+            buttonParent.remove();
+        })
         AllDepense.appendChild(cartItem)
-
-        
     })
-    
+
+
+    // const deleteButton = document.querySelectorAll('.delete-button')
+    // console.log(deleteButton);
+
+    // deleteButton.forEach(button => {
+    //     button.addEventListener('click', () =>{
+    //         console.log('hello');
+    //         const buttonParent = button.parentElement.parentElement;
+    //         buttonParent.remove();
+    //     })
+    // })
 })
+
+
+// function load() {
+//     if (localStorage.getItem('cartItemList')) {
+//        AllDepense = JSON.parse(localStorage.getItem('cartItemList'))
+//     }
+// }
+// load()
 
 
 function recherche() {
@@ -125,3 +147,6 @@ searchIcon.addEventListener('click', (event) => {
     event.preventDefault();
     recherche()
 })
+
+
+
