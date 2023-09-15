@@ -156,7 +156,14 @@ header {
     padding: 7px;
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
+
+.search-icon i:hover {
+    background-color: gray;
+    color: white;
+}
+
 
 .search-icon {
     margin-top: 3px;
@@ -186,4 +193,9 @@ header {
     width: 70px;
     height: 70px;
     border-radius: 100%;
+}
+
+.mesButtons{
+    position: absolute;
+    bottom: 20px;
 }

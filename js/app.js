@@ -15,6 +15,7 @@ const deleteButton = document.querySelectorAll(".delete-button");
 const searchIcon = document.getElementById('search-icon');
 const monInput = document.getElementById("input-search");
 const itemCount = document.querySelector('.itemCount');
+const clearCartButton = document.getElementById('clear-cart-button')
 
 for (let i = 0; i < categoryTitle.length; i++) {
   categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -73,6 +74,26 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
 }
 
 
+function saveToLocalStorage (title, price, image) {
+    // verifier si les cartItems sont deja stocker dans le localStorage 
+    let getItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+      // Créer un nouvel objet représentant le cartItem
+      const newCartItem = {
+        title: title,
+        price: price,
+        image: image
+    };
+
+     // Ajouter le nouvel objet à la liste des cartItems
+     getItems.push(newCartItem);
+
+      // Enregistrer la liste mise à jour dans le localStorage
+    localStorage.setItem('cartItems', JSON.stringify(getItems));
+
+
+}
+
 
 
 cartIcon.forEach(icon => {
@@ -82,6 +103,7 @@ cartIcon.forEach(icon => {
                 const price = item.querySelector('.amount').textContent;
                 const image = item.querySelector('.card-img-top').src;
                 const cartItem = document.createElement('div');
+                saveToLocalStorage(title, price, image);
                 cartItem.classList.add('cart-item');
                 cartItem.innerHTML = `
                 <div class="d-flex mt-4 justify-content-evenly">
@@ -101,8 +123,23 @@ cartIcon.forEach(icon => {
                 `;
         const button = cartItem.querySelector('.delete-button')
         button.addEventListener('click', () =>{
+            // Supprimez l'élément du panier
             const buttonParent = button.parentElement.parentElement;
             buttonParent.remove();
+
+            // recuperer la liste du cartItem du localStorage 
+            let mesCarts = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+             // Recherchez l'index de l'élément que vous souhaitez supprimer
+             const itemIndex = mesCarts.findIndex(item => item.title === title);
+
+             // Si l'élément a été trouvé, supprimez-le
+            if (itemIndex !== -1) {
+                mesCarts.splice(itemIndex, 1);
+                // Mettez à jour le localStorage avec la liste mise à jour
+                localStorage.setItem('cartItems', JSON.stringify(mesCarts));
+            }
+
             mettreAJourValeur();
         })
         AllDepense.appendChild(cartItem);
@@ -142,3 +179,7 @@ searchIcon.addEventListener('click', (event) => {
 })
 
 
+clearCartButton.addEventListener('click', () => {
+  
+
+})
