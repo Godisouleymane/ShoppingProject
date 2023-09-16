@@ -139,9 +139,11 @@ cartIcon.forEach(icon => {
                 </div>
                 `;
                
-        const prixTotal = cartItem.querySelector('.cartAmount')
-       totalPrix.textContent = prixTotal.textContent;
-       totalSurButton.textContent = totalPrix.textContent
+        const prixTotal = cartItem.querySelector('.cartAmount');
+        valeurActuele += parseInt(prixTotal.textContent);
+        console.log(parseInt(prixTotal.textContent));
+       totalPrix.textContent = valeurActuele
+       totalSurButton.textContent = parseInt(totalPrix.textContent)
        
         const button = cartItem.querySelector('.delete-button')
         button.addEventListener('click', () => {
