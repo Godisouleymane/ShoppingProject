@@ -15,7 +15,8 @@ const deleteButton = document.querySelectorAll(".delete-button");
 const searchIcon = document.getElementById('search-icon');
 const monInput = document.getElementById("input-search");
 const itemCount = document.querySelector('.itemCount');
-const clearCartButton = document.getElementById('clear-cart-button')
+const clearCartButton = document.getElementById('clear-cart-button');
+const monAlert = document.querySelector('.alert'); 
 
 for (let i = 0; i < categoryTitle.length; i++) {
   categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -94,6 +95,13 @@ function saveToLocalStorage (title, price, image) {
 
 }
 
+function notification(element){
+    element.classList.remove('hidden')
+  setTimeout(() => {
+    element.classList.add('hidden')
+  }, 2000);
+}
+
 
 
 cartIcon.forEach(icon => {
@@ -144,9 +152,60 @@ cartIcon.forEach(icon => {
         })
         AllDepense.appendChild(cartItem);
         mettreAJourValeur();
-
+        notification(monAlert);
     })
 })
+
+
+
+// Charger les données du localStorage lors du chargement de la page
+window.addEventListener('load', () => {
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    cartItems.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+            <div class="d-flex mt-4 justify-content-evenly">
+                <div class="imgCart">
+                    <img src="${item.image}" alt="${item.title}">
+                </div>
+                <div class="d-flex flex-column ms-5">
+                    <span class="cartTitle fs-4">${item.title}</span>
+                    <span class="cartAmount">${item.price}</span>
+                </div>
+                <div class="mt-2">
+                    <button class="delete-button bg-white text-danger fs-3 border-0">
+                           <i class="bi bi-trash-fill"></i>
+                       </button>
+                </div>
+            </div>
+        `;
+
+        const deleteButton = cartItem.querySelector('.delete-button');
+        deleteButton.addEventListener('click', () => {
+            // Supprimez l'élément du tableau dans le localStorage
+            const buttonParent = deleteButton.parentElement.parentElement;
+            buttonParent.remove();
+
+            // Récupérez la liste des cartItems du localStorage
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+            // Recherchez l'index de l'élément que vous souhaitez supprimer
+            const itemIndex = cartItems.findIndex(cartItem => cartItem.title === item.title);
+
+            // Si l'élément a été trouvé, supprimez-le
+            if (itemIndex !== -1) {
+                cartItems.splice(itemIndex, 1);
+                // Mettez à jour le localStorage avec la liste mise à jour
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            }
+
+            mettreAJourValeur();
+        });
+
+        AllDepense.appendChild(cartItem);
+    });
+});
 
 
 function mettreAJourValeur() {
