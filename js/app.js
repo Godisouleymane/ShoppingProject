@@ -17,6 +17,7 @@ const itemCount = document.querySelector('.itemCount');
 const clearCartButton = document.getElementById('clear-cart-button');
 const monAlert = document.querySelector('.alertCard');
 const totalPrix = document.getElementById('totalPrix')
+const totalSurButton = document.querySelector('.totalSurButton')
 let valeurActuele = 0;
 
 for (let i = 0; i < categoryTitle.length; i++) {
@@ -139,8 +140,8 @@ cartIcon.forEach(icon => {
                 `;
                
         const prixTotal = cartItem.querySelector('.cartAmount')
-
-       totalPrix.textContent = prixTotal.textContent
+       totalPrix.textContent = prixTotal.textContent;
+       totalSurButton.textContent = totalPrix.textContent
        
         const button = cartItem.querySelector('.delete-button')
         button.addEventListener('click', () => {
