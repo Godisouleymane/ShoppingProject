@@ -7,7 +7,6 @@ const cartTitle = document.querySelector(".cartTitle");
 const categoryName = document.querySelectorAll(".category-name");
 const prix = document.querySelectorAll(".amount");
 const AllDepense = document.querySelector(".AllDepense");
-const myArray = [];
 const prixNom = document.querySelectorAll(".prix-nom");
 const mesImages = document.querySelectorAll(".card-img-top");
 const allCakes = document.querySelectorAll(".cakes")
@@ -16,11 +15,13 @@ const searchIcon = document.getElementById('search-icon');
 const monInput = document.getElementById("input-search");
 const itemCount = document.querySelector('.itemCount');
 const clearCartButton = document.getElementById('clear-cart-button');
-const monAlert = document.querySelector('.alertCard'); 
+const monAlert = document.querySelector('.alertCard');
+const totalPrix = document.getElementById('totalPrix')
+let valeurActuele = 0;
 
 for (let i = 0; i < categoryTitle.length; i++) {
-  categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
-    
+    categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
+
 }
 
 function filterPosts(item) {
@@ -34,13 +35,13 @@ function filterPosts(item) {
             AllCategoryPosts[i].style.display = 'none';
             AllCategoryPosts[i].style.display = '0';
         }
-        
+
     }
 }
 
 function changeActivePosition(activeItem) {
     for (let i = 0; i < categoryTitle.length; i++) {
-       categoryTitle[i].classList.remove('active');
+        categoryTitle[i].classList.remove('active');
     }
     activeItem.classList.add("active");
 };
@@ -48,18 +49,18 @@ function changeActivePosition(activeItem) {
 const star = document.querySelectorAll('.star');
 
 for (let i = 0; i < star.length; i++) {
-    
+
     // Écoutez l'événement de clic sur l'icône d'étoile
-star[i].addEventListener('click', () => {
-    // Vérifiez si l'icône d'étoile est déjà remplie
-    if (star[i].classList.contains('filled')) {
-        // Si elle est remplie, retirez la classe "filled" pour la vider
-        star[i].classList.remove('filled');
-    } else {
-        // Sinon, ajoutez la classe "filled" pour la remplir
-        star[i].classList.add('filled');
-    }
-});
+    star[i].addEventListener('click', () => {
+        // Vérifiez si l'icône d'étoile est déjà remplie
+        if (star[i].classList.contains('filled')) {
+            // Si elle est remplie, retirez la classe "filled" pour la vider
+            star[i].classList.remove('filled');
+        } else {
+            // Sinon, ajoutez la classe "filled" pour la remplir
+            star[i].classList.add('filled');
+        }
+    });
 
 }
 
@@ -71,31 +72,31 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
     AllCategoryPosts[i].addEventListener('mouseleave', () => {
         cartIcon[i].classList.add('hidden')
     })
-   
+
 }
 
 
-function saveToLocalStorage (title, price, image) {
+function saveToLocalStorage(title, price, image) {
     // verifier si les cartItems sont deja stocker dans le localStorage 
     let getItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-      // Créer un nouvel objet représentant le cartItem
-      const newCartItem = {
+    // Créer un nouvel objet représentant le cartItem
+    const newCartItem = {
         title: title,
         price: price,
         image: image
     };
 
-     // Ajouter le nouvel objet à la liste des cartItems
-     getItems.push(newCartItem);
+    // Ajouter le nouvel objet à la liste des cartItems
+    getItems.push(newCartItem);
 
-      // Enregistrer la liste mise à jour dans le localStorage
+    // Enregistrer la liste mise à jour dans le localStorage
     localStorage.setItem('cartItems', JSON.stringify(getItems));
 
 
 }
 
-function notification(element, message){
+function notification(element, message) {
     element.classList.remove('hidden')
     element.innerHTML = ` <div class="alert alert-primary d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2 " role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
@@ -104,9 +105,9 @@ function notification(element, message){
     </div>
   </div>`
 
-  setTimeout(() => {
-    element.classList.add('hidden')
-  }, 2000);
+    setTimeout(() => {
+        element.classList.add('hidden')
+    }, 2000);
 }
 
 
@@ -114,13 +115,13 @@ function notification(element, message){
 cartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
         const item = icon.parentElement;
-                const title = item.querySelector('.category-name').textContent;
-                const price = item.querySelector('.amount').textContent;
-                const image = item.querySelector('.card-img-top').src;
-                const cartItem = document.createElement('div');
-                saveToLocalStorage(title, price, image);
-                cartItem.classList.add('cart-item');
-                cartItem.innerHTML = `
+        const title = item.querySelector('.category-name').textContent;
+        const price = item.querySelector('.amount').textContent;
+        const image = item.querySelector('.card-img-top').src;
+        const cartItem = document.createElement('div');
+        saveToLocalStorage(title, price, image);
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
                 <div class="d-flex mt-4 justify-content-evenly">
                     <div class="imgCart">
                     <img src="${image}" alt="${title}">
@@ -136,8 +137,13 @@ cartIcon.forEach(icon => {
                     </div>
                 </div>
                 `;
+               
+        const prixTotal = cartItem.querySelector('.cartAmount')
+
+       totalPrix.textContent = prixTotal.textContent
+       
         const button = cartItem.querySelector('.delete-button')
-        button.addEventListener('click', () =>{
+        button.addEventListener('click', () => {
             // Supprimez l'élément du panier
             const buttonParent = button.parentElement.parentElement;
             buttonParent.remove();
@@ -145,10 +151,10 @@ cartIcon.forEach(icon => {
             // recuperer la liste du cartItem du localStorage 
             let mesCarts = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-             // Recherchez l'index de l'élément que vous souhaitez supprimer
-             const itemIndex = mesCarts.findIndex(item => item.title === title);
+            // Recherchez l'index de l'élément que vous souhaitez supprimer
+            const itemIndex = mesCarts.findIndex(item => item.title === title);
 
-             // Si l'élément a été trouvé, supprimez-le
+            // Si l'élément a été trouvé, supprimez-le
             if (itemIndex !== -1) {
                 mesCarts.splice(itemIndex, 1);
                 // Mettez à jour le localStorage avec la liste mise à jour
@@ -246,6 +252,5 @@ searchIcon.addEventListener('click', (event) => {
 
 
 clearCartButton.addEventListener('click', () => {
-  
 
 })
