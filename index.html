@@ -39,7 +39,8 @@
                             <i class="bi bi-cart3"></i> <span class="itemCount">0</span> Items-$
                             <span class="">0</span>
                             <span class="">0</span>
-                            <span class="">0</span></button>
+                            <span class="">0</span>
+                        </button>
                     </div>
 
                 </div>
@@ -51,12 +52,15 @@
               <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
             </symbol>
           </svg>
-        <div class="alert alert-primary d-flex align-items-center hidden" role="alert">
-            <svg class="bi flex-shrink-0 me-2 " role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-            <div class="text-center mt-3">
-             <p class="text-center">Element ajouter avec sucess</p>
-            </div>
+          <div class="alertCard hidden">
+            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2 " role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                <div class="text-center mt-3">
+                 <p class="text-center">Element ajouter avec sucess</p>
+                </div>
+              </div>
           </div>
+       
         <div class="offcanvas offcanvas-end h-50 info" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header d-flex justify-content-end">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -79,8 +83,11 @@
                         </button>
                     </div>
                 </div> -->
-
-                <div class="mesButtons d-flex justify-content-center w-100">
+                <div class="monTotal d-flex w-100 justify-content-center bg-secondary-subtle">
+                    <h6 class="fs-3">Total</h6>
+                    <span class="fs-3 ms-3">$ 0.00</span>
+                </div>
+                <div class="mesButtons d-flex justify-content-center w-100 p-1 bg-secondary-subtle">
                     <button id="clear-cart-button" class="btn btn-outline-dark">CLEAR CART</button>
                     <button id="checkout-button" class="btn btn-outline-danger ms-3">CHECKOUT</button>
                 </div>

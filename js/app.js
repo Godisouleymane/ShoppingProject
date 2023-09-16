@@ -16,7 +16,7 @@ const searchIcon = document.getElementById('search-icon');
 const monInput = document.getElementById("input-search");
 const itemCount = document.querySelector('.itemCount');
 const clearCartButton = document.getElementById('clear-cart-button');
-const monAlert = document.querySelector('.alert'); 
+const monAlert = document.querySelector('.alertCard'); 
 
 for (let i = 0; i < categoryTitle.length; i++) {
   categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -95,8 +95,15 @@ function saveToLocalStorage (title, price, image) {
 
 }
 
-function notification(element){
+function notification(element, message){
     element.classList.remove('hidden')
+    element.innerHTML = ` <div class="alert alert-primary d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2 " role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+    <div class="text-center mt-3">
+     <p class="text-center">${message}</p>
+    </div>
+  </div>`
+
   setTimeout(() => {
     element.classList.add('hidden')
   }, 2000);
@@ -152,7 +159,7 @@ cartIcon.forEach(icon => {
         })
         AllDepense.appendChild(cartItem);
         mettreAJourValeur();
-        notification(monAlert);
+        notification(monAlert, "Element ajouter avec succes");
     })
 })
 

@@ -197,11 +197,22 @@ header {
 
 .mesButtons{
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
+    right: 1px;
+    height: 50px;
+    z-index: 9999;
+}
+
+.monTotal {
+    position: absolute;
+    bottom: 50px;
+    right: 1px;
+    z-index: 9999;
+    
 }
 
 
-.alert {
+.alertCard {
     position: fixed;
     top: 10px;
     right: 10px;
@@ -214,11 +225,12 @@ header {
     display: none !important;
 }
 
-.alert svg {
+.alertCard svg {
     width: 30px;
     height: 30px;
     color: white !important;
 }
+
 
 
 @media screen and (max-width: 767px) {
