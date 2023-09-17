@@ -111,6 +111,7 @@ function getValeurDuLocalStorage() {
 // Initialisez le résultat avec la valeur stockée dans le local storage
 let resultat = getValeurDuLocalStorage();
 totalPrix.textContent = `${resultat}$`;
+totalSurButton.textContent = resultat
 
 
 function notification(element, message) {
@@ -172,15 +173,14 @@ cartIcon.forEach(icon => {
 
             // recuperer la liste du cartItem du localStorage 
             let mesCarts = JSON.parse(localStorage.getItem('cartItems')) || [];
-
             // Recherchez l'index de l'élément que vous souhaitez supprimer
             const itemIndex = mesCarts.findIndex(item => item.title === title);
-
             // Si l'élément a été trouvé, supprimez-le
             if (itemIndex !== -1) {
                 mesCarts.splice(itemIndex, 1);
                 // Mettez à jour le localStorage avec la liste mise à jour
                 localStorage.setItem('cartItems', JSON.stringify(mesCarts));
+                localStorage.setItem('resultat', resultat.toString());
             }
 
             mettreAJourValeur();
@@ -234,6 +234,8 @@ window.addEventListener('load', () => {
                 cartItems.splice(itemIndex, 1);
                 // Mettez à jour le localStorage avec la liste mise à jour
                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
+               
+
             }
 
             mettreAJourValeur();
@@ -278,5 +280,12 @@ searchIcon.addEventListener('click', (event) => {
 
 
 clearCartButton.addEventListener('click', () => {
-
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('resultat');
+    while (AllDepense.firstChild) {
+        AllDepense.removeChild(AllDepense.firstChild);
+    }
+    totalPrix.textContent = `${getValeurDuLocalStorage()}$`;
+    totalSurButton.textContent = getValeurDuLocalStorage()
+    notification(monAlert, "Elements supprimer avec succes")
 })
