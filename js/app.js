@@ -18,7 +18,8 @@ const clearCartButton = document.getElementById('clear-cart-button');
 const monAlert = document.querySelector('.alertCard');
 const totalPrix = document.getElementById('totalPrix')
 const totalSurButton = document.querySelector('.totalSurButton')
-let valeurActuele = 0;
+let valeurActuele = 1;
+let quantiteActuelle;
 
 for (let i = 0; i < categoryTitle.length; i++) {
     categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
@@ -77,7 +78,7 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
 }
 
 
-function saveToLocalStorage(title, price, image) {
+function saveToLocalStorage(title, price, image,) {
     // verifier si les cartItems sont deja stocker dans le localStorage 
     let getItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
@@ -86,6 +87,7 @@ function saveToLocalStorage(title, price, image) {
         title: title,
         price: price,
         image: image,
+        
     };
 
     // Ajouter le nouvel objet à la liste des cartItems
@@ -97,21 +99,6 @@ function saveToLocalStorage(title, price, image) {
 
 }
 
-function getValeurDuLocalStorage() {
-    const valeurLocalStorage = localStorage.getItem('resultat');
-    let resultat = 0; // Valeur par défaut si la clé n'existe pas dans le local storage
-
-    if (valeurLocalStorage !== null && !isNaN(valeurLocalStorage)) {
-        resultat = parseInt(valeurLocalStorage);
-    }
-
-    return resultat;
-}
-
-// Initialisez le résultat avec la valeur stockée dans le local storage
-let resultat = getValeurDuLocalStorage();
-totalPrix.textContent = `${resultat}$`;
-totalSurButton.textContent = resultat
 
 
 function notification(element, message) {
@@ -135,66 +122,18 @@ cartIcon.forEach(icon => {
         const item = icon.parentElement;
         const title = item.querySelector('.category-name').textContent;
         const price = item.querySelector('.amount').textContent;
+        const numberPrice = price.split('$')[0];
         const image = item.querySelector('.card-img-top').src;
-        const cartItem = document.createElement('div');
-        saveToLocalStorage(title, price, image,);
-        cartItem.classList.add('cart-item');
-        cartItem.innerHTML = `
-                <div class="d-flex mt-4 justify-content-evenly">
-                    <div class="imgCart">
-                    <img src="${image}" alt="${title}">
-                    </div>
-                    <div class="d-flex flex-column ms-5">
-                        <span class="cartTitle fs-4">${title}</span>
-                        <span class="cartAmount">${price}</span>
-                    </div>
-                       <div class="mt-2">
-                        <button class="delete-button bg-white text-danger fs-3 border-0">
-                               <i class="bi bi-trash-fill"></i>
-                           </button>
-                    </div>
-                </div>
-                `;
-
-        const prixTotal = cartItem.querySelector('.cartAmount');
-        const valeurAjoutee = parseInt(prixTotal.textContent);
-        // Ajoutez la valeur extraite à la valeur actuelle du résultat
-        resultat += valeurAjoutee;
-        // Mettez à jour le total et affichez-le sur le bouton
-        totalPrix.textContent = `${resultat}$`;
-        totalSurButton.textContent = resultat;
-        localStorage.setItem('resultat', resultat.toString());
-
-        const button = cartItem.querySelector('.delete-button')
-        button.addEventListener('click', () => {
-            // Supprimez l'élément du panier
-            const buttonParent = button.parentElement.parentElement;
-            buttonParent.remove();
-
-            // recuperer la liste du cartItem du localStorage 
-            let mesCarts = JSON.parse(localStorage.getItem('cartItems')) || [];
-            // Recherchez l'index de l'élément que vous souhaitez supprimer
-            const itemIndex = mesCarts.findIndex(item => item.title === title);
-            // Si l'élément a été trouvé, supprimez-le
-            if (itemIndex !== -1) {
-                mesCarts.splice(itemIndex, 1);
-                // Mettez à jour le localStorage avec la liste mise à jour
-                localStorage.setItem('cartItems', JSON.stringify(mesCarts));
-                localStorage.setItem('resultat', resultat.toString());
-            }
-
-            mettreAJourValeur();
-        })
-        AllDepense.appendChild(cartItem);
-        mettreAJourValeur();
+        saveToLocalStorage(title, numberPrice, image);
+        afficherElementsDansPanier()
         notification(monAlert, "Element ajouter avec succes");
     })
 })
 
 
 
-// Charger les données du localStorage lors du chargement de la page
-window.addEventListener('load', () => {
+const afficherElementsDansPanier = () => {
+    AllDepense.innerHTML = '';
     let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     cartItems.forEach(item => {
         const cartItem = document.createElement('div');
@@ -215,6 +154,10 @@ window.addEventListener('load', () => {
                 </div>
             </div>
         `;
+         const total =  JSON.parse(localStorage.getItem('resultat'))
+        // Mettez à jour le total et affichez-le sur le bouton
+        totalPrix.textContent = `${total}$`;
+        totalSurButton.textContent = total;
 
 
         const deleteButton = cartItem.querySelector('.delete-button');
@@ -239,21 +182,32 @@ window.addEventListener('load', () => {
             }
 
             mettreAJourValeur();
-        }
-        );
-
+        });
+        mettreAJourValeur()
         AllDepense.appendChild(cartItem);
     });
-});
-
-
-function mettreAJourValeur() {
-    const divsDeNiveauSuperieur = Array.from(AllDepense.children).filter(element => element.tagName === 'DIV');
-    const nombreElements = divsDeNiveauSuperieur.length;
-    itemCount.textContent = nombreElements;
 }
 
-mettreAJourValeur();
+afficherElementsDansPanier();
+
+function mettreAJourValeur() {
+    const cart = JSON.parse(localStorage.getItem('cartItems'))
+    itemCount.textContent = "";
+    itemCount.textContent = cart ? cart.length: 0;
+    let total = 0;
+    if (cart) {
+        cart.forEach(element => {
+            total += parseInt(element.price)
+        })
+    }
+    localStorage.setItem('resultat', total.toString());
+    totalPrix.textContent = `${total}$`;
+    totalSurButton.textContent = total;
+}
+
+
+
+
 
 
 
@@ -285,7 +239,6 @@ clearCartButton.addEventListener('click', () => {
     while (AllDepense.firstChild) {
         AllDepense.removeChild(AllDepense.firstChild);
     }
-    totalPrix.textContent = `${getValeurDuLocalStorage()}$`;
-    totalSurButton.textContent = getValeurDuLocalStorage()
+    mettreAJourValeur()
     notification(monAlert, "Elements supprimer avec succes")
 })
