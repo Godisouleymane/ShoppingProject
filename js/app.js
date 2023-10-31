@@ -18,7 +18,15 @@ const clearCartButton = document.getElementById('clear-cart-button');
 const monAlert = document.querySelector('.alertCard');
 const totalPrix = document.getElementById('totalPrix')
 const totalSurButton = document.querySelector('.totalSurButton')
+const cardImgTop = document.querySelectorAll('.card-img-top');
+const imageContainer = document.getElementById("imageContainer");
+const largeImage = document.getElementById("grandeImage");
+const prevButton = document.getElementById("prevButton");
+const nextButton = document.getElementById("nextButton");
+const grandContainer = document.querySelector('.imgContainer')
+
 let valeurActuele = 1;
+let cartItemIdCounter = 1;
 let quantiteActuelle;
 
 for (let i = 0; i < categoryTitle.length; i++) {
@@ -78,26 +86,26 @@ for (let i = 0; i < AllCategoryPosts.length; i++) {
 }
 
 
-function saveToLocalStorage(title, price, image,) {
-    // verifier si les cartItems sont deja stocker dans le localStorage 
-    let getItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+// function saveToLocalStorage(title, price, image,) {
+//     // verifier si les cartItems sont deja stocker dans le localStorage 
+//     let getItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-    // Créer un nouvel objet représentant le cartItem
-    const newCartItem = {
-        title: title,
-        price: price,
-        image: image,
+//     // Créer un nouvel objet représentant le cartItem
+//     const newCartItem = {
+//         title: title,
+//         price: price,
+//         image: image,
         
-    };
+//     };
 
-    // Ajouter le nouvel objet à la liste des cartItems
-    getItems.push(newCartItem);
+//     // Ajouter le nouvel objet à la liste des cartItems
+//     getItems.push(newCartItem);
 
-    // Enregistrer la liste mise à jour dans le localStorage
-    localStorage.setItem('cartItems', JSON.stringify(getItems));
+//     // Enregistrer la liste mise à jour dans le localStorage
+//     localStorage.setItem('cartItems', JSON.stringify(getItems));
 
 
-}
+// }
 
 
 
@@ -117,6 +125,80 @@ function notification(element, message) {
 
 
 
+// cartIcon.forEach(icon => {
+//     icon.addEventListener("click", () => {
+//         const item = icon.parentElement;
+//         const title = item.querySelector('.category-name').textContent;
+//         const price = item.querySelector('.amount').textContent;
+//         const numberPrice = price.split('$')[0];
+//         const image = item.querySelector('.card-img-top').src;
+//         const cartItemId = `cartItem_${cartItemIdCounter}`;
+//         saveToLocalStorage(title, numberPrice, image);
+//         afficherElementsDansPanier()
+//         notification(monAlert, "Element ajouter avec succes");
+//     })
+// })
+
+// let cartItems = [];
+
+// const afficherElementsDansPanier = () => {
+//     AllDepense.innerHTML = '';
+//     cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+//     cartItems.forEach(item => {
+//         const cartItem = document.createElement('div');
+//         cartItem.classList.add('cart-item');
+//         cartItem.innerHTML = `
+//             <div class="d-flex mt-4 justify-content-evenly">
+//                 <div class="imgCart">
+//                     <img src="${item.image}" alt="${item.title}">
+//                 </div>
+//                 <div class="d-flex flex-column ms-5">
+//                     <span class="cartTitle fs-4">${item.title}</span>
+//                     <span class="cartAmount">${item.price}</span>
+//                 </div>
+//                 <div class="mt-2">
+//                     <button class="delete-button bg-white text-danger fs-3 border-0">
+//                            <i class="bi bi-trash-fill"></i>
+//                        </button>
+//                 </div>
+//             </div>
+//         `;
+//          const total =  JSON.parse(localStorage.getItem('resultat'))
+//         // Mettez à jour le total et affichez-le sur le bouton
+//         totalPrix.textContent = `${total}$`;
+//         totalSurButton.textContent = total;
+
+
+//         const deleteButton = cartItem.querySelector('.delete-button');
+//         deleteButton.addEventListener('click', () => {
+//             // Supprimez l'élément du tableau dans le localStorage
+//             const buttonParent = deleteButton.parentElement.parentElement;
+//             buttonParent.remove();
+
+//             // Récupérez la liste des cartItems du localStorage
+//             let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+//             // Recherchez l'index de l'élément que vous souhaitez supprimer
+//             const itemIndex = cartItems.findIndex(cartItem => cartItem.title === item.title);
+
+//             // Si l'élément a été trouvé, supprimez-le
+//             if (itemIndex !== -1) {
+//                 cartItems.splice(itemIndex, 1);
+//                 // Mettez à jour le localStorage avec la liste mise à jour
+//                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
+//             }
+
+//             mettreAJourValeur();
+//         });
+//         mettreAJourValeur()
+//         AllDepense.appendChild(cartItem);
+//     });
+// }
+
+// afficherElementsDansPanier();
+
+let cartItems = []; // Tableau pour stocker les éléments du panier
+
 cartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
         const item = icon.parentElement;
@@ -124,17 +206,38 @@ cartIcon.forEach(icon => {
         const price = item.querySelector('.amount').textContent;
         const numberPrice = price.split('$')[0];
         const image = item.querySelector('.card-img-top').src;
-        saveToLocalStorage(title, numberPrice, image);
-        afficherElementsDansPanier()
-        notification(monAlert, "Element ajouter avec succes");
-    })
-})
+        const cartItemId = `cartItem_${cartItemIdCounter}`;
+        cartItemIdCounter++; // Incrémentez le compteur pour le prochain ID unique
 
+        // Vérifiez si l'élément existe déjà dans le panier
+        const existingItem = cartItems.find(item => item.title === title);
+        if (existingItem) {
+            existingItem.quantity++; // Incrémentez la quantité si l'élément existe déjà
+        } else {
+            // Ajoutez un nouvel objet cartItem si l'élément n'existe pas encore
+            cartItems.push({
+                id: cartItemId,
+                title: title,
+                price: numberPrice,
+                image: image,
+                quantity: 1, // Commencez avec une quantité de 1
+            });
+        }
 
+        saveToLocalStorage(cartItems); // Enregistrez le tableau mis à jour dans le localStorage
+        afficherElementsDansPanier();
+        notification(monAlert, "Élément ajouté avec succès");
+    });
+});
+
+// Mettez à jour la fonction saveToLocalStorage pour stocker le tableau des cartItems
+function saveToLocalStorage(cartItems) {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+}
 
 const afficherElementsDansPanier = () => {
     AllDepense.innerHTML = '';
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     cartItems.forEach(item => {
         const cartItem = document.createElement('div');
         cartItem.classList.add('cart-item');
@@ -145,7 +248,7 @@ const afficherElementsDansPanier = () => {
                 </div>
                 <div class="d-flex flex-column ms-5">
                     <span class="cartTitle fs-4">${item.title}</span>
-                    <span class="cartAmount">${item.price}</span>
+                    <span class="cartAmount">${item.title} x ${item.quantity}</span>
                 </div>
                 <div class="mt-2">
                     <button class="delete-button bg-white text-danger fs-3 border-0">
@@ -154,36 +257,35 @@ const afficherElementsDansPanier = () => {
                 </div>
             </div>
         `;
-         const total =  JSON.parse(localStorage.getItem('resultat'))
-        // Mettez à jour le total et affichez-le sur le bouton
-        totalPrix.textContent = `${total}$`;
-        totalSurButton.textContent = total;
+        const total = JSON.parse(localStorage.getItem('resultat'))
+                // Mettez à jour le total et affichez-le sur le bouton
+                totalPrix.textContent = `${total}$`;
+                totalSurButton.textContent = total;
 
 
-        const deleteButton = cartItem.querySelector('.delete-button');
-        deleteButton.addEventListener('click', () => {
-            // Supprimez l'élément du tableau dans le localStorage
-            const buttonParent = deleteButton.parentElement.parentElement;
-            buttonParent.remove();
+                const deleteButton = cartItem.querySelector('.delete-button');
+                deleteButton.addEventListener('click', () => {
+                    // Supprimez l'élément du tableau dans le localStorage
+                    const buttonParent = deleteButton.parentElement.parentElement;
+                    buttonParent.remove();
 
-            // Récupérez la liste des cartItems du localStorage
-            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                    // Récupérez la liste des cartItems du localStorage
+                    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-            // Recherchez l'index de l'élément que vous souhaitez supprimer
-            const itemIndex = cartItems.findIndex(cartItem => cartItem.title === item.title);
+                    // Recherchez l'index de l'élément que vous souhaitez supprimer
+                    const itemIndex = cartItems.findIndex(cartItem => cartItem.title === item.title);
 
-            // Si l'élément a été trouvé, supprimez-le
-            if (itemIndex !== -1) {
-                cartItems.splice(itemIndex, 1);
-                // Mettez à jour le localStorage avec la liste mise à jour
-                localStorage.setItem('cartItems', JSON.stringify(cartItems));
-               
+                    // Si l'élément a été trouvé, supprimez-le
+                    if (itemIndex !== -1) {
+                        cartItems.splice(itemIndex, 1);
+                        // Mettez à jour le localStorage avec la liste mise à jour
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    }
 
-            }
+                    mettreAJourValeur();
+                });
+                mettreAJourValeur()
 
-            mettreAJourValeur();
-        });
-        mettreAJourValeur()
         AllDepense.appendChild(cartItem);
     });
 }
@@ -242,3 +344,48 @@ clearCartButton.addEventListener('click', () => {
     mettreAJourValeur()
     notification(monAlert, "Elements supprimer avec succes")
 })
+
+let currentIndex = 0;
+
+function showImage(index) {
+    const imagePath = cardImgTop[index].getAttribute("src");
+    largeImage.setAttribute("src", imagePath);
+    console.log(imagePath);
+}
+
+cardImgTop.forEach((image, index) => {
+    image.addEventListener("click", function () {
+        currentIndex = index;
+        showImage(currentIndex);
+        grandContainer.style.display = "flex";
+        document.body.style.overflow = "hidden"
+    });
+});
+
+prevButton.addEventListener("click", function () {
+    if (currentIndex > 0) {
+        currentIndex--;
+        showImage(currentIndex);
+    }
+});
+
+
+nextButton.addEventListener("click", function () {
+    if (currentIndex < cardImgTop.length - 1) {
+        currentIndex++;
+        showImage(currentIndex);
+        
+    } else {
+        currentIndex = 0
+    }
+});
+
+
+imageContainer.addEventListener("click", function (e) {
+    if (e.target.id === 'grandeImage') {
+        grandContainer.style.display = "none";
+        document.body.style.overflow = "auto"
+    }
+    
+});
+
