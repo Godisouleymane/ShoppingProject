@@ -55,21 +55,35 @@ function changeActivePosition(activeItem) {
     activeItem.classList.add("active");
 };
 
+// Sélectionnez les étoiles
+const starIcons = document.querySelectorAll('.star-icon');
 
-const starIcons = document.querySelectorAll('.star-icon') 
-
-starIcons.forEach((card) => {
+starIcons.forEach((card, cardIndex) => {
     const star = [...card.children].filter(child => child.className === "star");
 
-    star.forEach((item, index1) => {
+    star.forEach((item, starIndex) => {
         item.addEventListener('click', () => {
             star.forEach((stars, index2) => {
-                index1 >= index2 ? stars.classList.add('star-active') : stars.classList.remove('star-active')
-            })
-        })
+                starIndex >= index2 ? stars.classList.add('star-active') : stars.classList.remove('star-active');
+            });
+
+            // Enregistrez la note dans le localStorage avec une clé unique pour chaque image
+            const ratingData = Array.from(star).map(star => star.classList.contains('star-active'));
+            localStorage.setItem(`userRating-${cardIndex}`, JSON.stringify(ratingData));
+        });
+
+        // Récupérez et initialisez la note depuis le localStorage
+        const userRatingData = JSON.parse(localStorage.getItem(`userRating-${cardIndex}`));
+        if (userRatingData && userRatingData.length === star.length) {
+            if (userRatingData[starIndex]) {
+                item.classList.add('star-active');
+            } else {
+                item.classList.remove('star-active');
+            }
+        }
     });
-    
 });
+
 
 
 for (let i = 0; i < AllCategoryPosts.length; i++) {
