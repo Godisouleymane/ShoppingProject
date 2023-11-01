@@ -327,6 +327,7 @@ searchIcon.addEventListener('click', (event) => {
 
 
 clearCartButton.addEventListener('click', () => {
+    window.location.reload();
     localStorage.removeItem('cartItems');
     localStorage.removeItem('resultat');
     while (AllDepense.firstChild) {
