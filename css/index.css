@@ -243,8 +243,13 @@ header {
         font-size: 40px;
     }
 
+    ul {
+        padding-left: 0;
+    }
+
     .category-title {
-        gap: 10px;
+        padding-left: 10px;
+        margin-top: 10px;
     }
 
 }
