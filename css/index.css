@@ -141,6 +141,10 @@ header {
     font-size: 20px;
 }
 
+.star-active {
+    color: gold;
+}
+
 .star.filled {
     color: rgb(106, 233, 89);
 }
@@ -251,6 +255,7 @@ header {
         padding-left: 10px;
         margin-top: 10px;
     }
+
 
 }
 

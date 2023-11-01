@@ -55,23 +55,22 @@ function changeActivePosition(activeItem) {
     activeItem.classList.add("active");
 };
 
-const star = document.querySelectorAll('.star');
 
-for (let i = 0; i < star.length; i++) {
+const starIcons = document.querySelectorAll('.star-icon') 
 
-    // Écoutez l'événement de clic sur l'icône d'étoile
-    star[i].addEventListener('click', () => {
-        // Vérifiez si l'icône d'étoile est déjà remplie
-        if (star[i].classList.contains('filled')) {
-            // Si elle est remplie, retirez la classe "filled" pour la vider
-            star[i].classList.remove('filled');
-        } else {
-            // Sinon, ajoutez la classe "filled" pour la remplir
-            star[i].classList.add('filled');
-        }
+starIcons.forEach((card) => {
+    const star = [...card.children].filter(child => child.className === "star");
+
+    star.forEach((item, index1) => {
+        item.addEventListener('click', () => {
+            star.forEach((stars, index2) => {
+                index1 >= index2 ? stars.classList.add('star-active') : stars.classList.remove('star-active')
+            })
+        })
     });
+    
+});
 
-}
 
 for (let i = 0; i < AllCategoryPosts.length; i++) {
     AllCategoryPosts[i].addEventListener('mouseenter', () => {
