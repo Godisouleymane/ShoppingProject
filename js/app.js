@@ -26,7 +26,6 @@ const nextButton = document.getElementById("nextButton");
 const grandContainer = document.querySelector('.imgContainer')
 
 let valeurActuele = 1;
-let cartItemIdCounter = 1;
 let quantiteActuelle;
 
 for (let i = 0; i < categoryTitle.length; i++) {
@@ -197,7 +196,7 @@ function notification(element, message) {
 
 // afficherElementsDansPanier();
 
-let cartItems = []; // Tableau pour stocker les éléments du panier
+let cartItems = [];
 
 cartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
@@ -206,25 +205,24 @@ cartIcon.forEach(icon => {
         const price = item.querySelector('.amount').textContent;
         const numberPrice = price.split('$')[0];
         const image = item.querySelector('.card-img-top').src;
-        const cartItemId = `cartItem_${cartItemIdCounter}`;
-        cartItemIdCounter++; // Incrémentez le compteur pour le prochain ID unique
+        // Vérifiez si l'élément existe déjà dans le panier;
 
-        // Vérifiez si l'élément existe déjà dans le panier
         const existingItem = cartItems.find(item => item.title === title);
         if (existingItem) {
-            existingItem.quantity++; // Incrémentez la quantité si l'élément existe déjà
+            existingItem.quantity++; 
+            const testt = parseInt(price) * parseInt(existingItem.quantity)
+            existingItem.price = testt
         } else {
             // Ajoutez un nouvel objet cartItem si l'élément n'existe pas encore
             cartItems.push({
-                id: cartItemId,
                 title: title,
                 price: numberPrice,
                 image: image,
-                quantity: 1, // Commencez avec une quantité de 1
+                quantity: 1,
             });
         }
 
-        saveToLocalStorage(cartItems); // Enregistrez le tableau mis à jour dans le localStorage
+        saveToLocalStorage(cartItems);
         afficherElementsDansPanier();
         notification(monAlert, "Élément ajouté avec succès");
     });
@@ -237,8 +235,8 @@ function saveToLocalStorage(cartItems) {
 
 const afficherElementsDansPanier = () => {
     AllDepense.innerHTML = '';
-    cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    cartItems.forEach(item => {
+    const cartItemsArray = JSON.parse(localStorage.getItem('cartItems')) || [];
+    cartItemsArray.forEach(item => {
         const cartItem = document.createElement('div');
         cartItem.classList.add('cart-item');
         cartItem.innerHTML = `
@@ -248,7 +246,8 @@ const afficherElementsDansPanier = () => {
                 </div>
                 <div class="d-flex flex-column ms-5">
                     <span class="cartTitle fs-4">${item.title}</span>
-                    <span class="cartAmount">${item.title} x ${item.quantity}</span>
+                    <span class="cartAmount">${item.quantity} ${item.title} </span>
+                    <span class=""> = ${item.price}$</span>
                 </div>
                 <div class="mt-2">
                     <button class="delete-button bg-white text-danger fs-3 border-0">
@@ -262,24 +261,23 @@ const afficherElementsDansPanier = () => {
                 totalPrix.textContent = `${total}$`;
                 totalSurButton.textContent = total;
 
-
                 const deleteButton = cartItem.querySelector('.delete-button');
                 deleteButton.addEventListener('click', () => {
                     // Supprimez l'élément du tableau dans le localStorage
                     const buttonParent = deleteButton.parentElement.parentElement;
                     buttonParent.remove();
-
+                    window.location.reload()
                     // Récupérez la liste des cartItems du localStorage
-                    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                    let cartItemes = JSON.parse(localStorage.getItem('cartItems')) || [];
 
                     // Recherchez l'index de l'élément que vous souhaitez supprimer
-                    const itemIndex = cartItems.findIndex(cartItem => cartItem.title === item.title);
+                    const itemIndex = cartItemes.findIndex(cartItem => cartItem.title === item.title);
 
                     // Si l'élément a été trouvé, supprimez-le
                     if (itemIndex !== -1) {
-                        cartItems.splice(itemIndex, 1);
+                        cartItemes.splice(itemIndex, 1);
                         // Mettez à jour le localStorage avec la liste mise à jour
-                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                       saveToLocalStorage(cartItemes)
                     }
 
                     mettreAJourValeur();
@@ -306,12 +304,6 @@ function mettreAJourValeur() {
     totalPrix.textContent = `${total}$`;
     totalSurButton.textContent = total;
 }
-
-
-
-
-
-
 
 
 function recherche() {
