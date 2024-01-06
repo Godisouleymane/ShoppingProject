@@ -265,6 +265,10 @@ header {
 
 }
 
+.red {
+    background-color: red;
+}
+
 
 #imageContainer {
     width: 80%;

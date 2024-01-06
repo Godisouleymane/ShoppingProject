@@ -16,14 +16,14 @@ const monInput = document.getElementById("input-search");
 const itemCount = document.querySelector('.itemCount');
 const clearCartButton = document.getElementById('clear-cart-button');
 const monAlert = document.querySelector('.alertCard');
-const totalPrix = document.getElementById('totalPrix')
+const totalPrix = document.getElementById('totalPrix');
 const totalSurButton = document.querySelector('.totalSurButton')
 const cardImgTop = document.querySelectorAll('.card-img-top');
 const imageContainer = document.getElementById("imageContainer");
 const largeImage = document.getElementById("grandeImage");
 const prevButton = document.getElementById("prevButton");
 const nextButton = document.getElementById("nextButton");
-const grandContainer = document.querySelector('.imgContainer')
+const grandContainer = document.querySelector('.imgContainer');
 
 let valeurActuele = 1;
 let quantiteActuelle;
@@ -48,6 +48,7 @@ function filterPosts(item) {
     }
 }
 
+
 function changeActivePosition(activeItem) {
     for (let i = 0; i < categoryTitle.length; i++) {
         categoryTitle[i].classList.remove('active');
@@ -60,19 +61,19 @@ const starIcons = document.querySelectorAll('.star-icon');
 
 starIcons.forEach((card, cardIndex) => {
     const star = [...card.children].filter(child => child.className === "star");
-
+    console.log(star);
     star.forEach((item, starIndex) => {
         item.addEventListener('click', () => {
             star.forEach((stars, index2) => {
                 starIndex >= index2 ? stars.classList.add('star-active') : stars.classList.remove('star-active');
             });
 
-            // Enregistrez la note dans le localStorage avec une clé unique pour chaque image
+            // Enregistrez les etoiles dans le localStorage pour chaque image
             const ratingData = Array.from(star).map(star => star.classList.contains('star-active'));
             localStorage.setItem(`userRating-${cardIndex}`, JSON.stringify(ratingData));
         });
 
-        // Récupérez et initialisez la note depuis le localStorage
+        // Récupérez et initialisez l'etoile depuis le localStorage
         const userRatingData = JSON.parse(localStorage.getItem(`userRating-${cardIndex}`));
         if (userRatingData && userRatingData.length === star.length) {
             if (userRatingData[starIndex]) {
@@ -382,7 +383,7 @@ nextButton.addEventListener("click", function () {
         showImage(currentIndex);
         
     } else {
-        currentIndex = 0
+        currentIndex = 0;
     }
 });
 
